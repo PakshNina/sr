@@ -23,7 +23,7 @@ type srProducer struct {
 func NewSRProducer(kafkaURL, srURL string) (*srProducer, error) {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": kafkaURL})
 	if err != nil {
-		return nil, fmt.Errorf("error with creating ProducerClient: %w", err)
+		return nil, fmt.Errorf("error with creating producer: %w", err)
 	}
 	c, err := schemaregistry.NewClient(schemaregistry.NewConfig(srURL))
 	if err != nil {
