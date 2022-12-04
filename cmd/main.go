@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"sr/internal/config"
-	"sr/internal/queue"
+	"sr/internal/kafka"
 	"sr/pkg/test"
 )
 
@@ -15,7 +15,7 @@ const (
 
 func main() {
 	cfg := config.NewConfig()
-	producer, err := queue.NewProducer(cfg.KafkaURL, cfg.SchemaRegistryURL)
+	producer, err := kafka.NewProducer(cfg.KafkaURL, cfg.SchemaRegistryURL)
 	defer producer.Close()
 
 	if err != nil {
