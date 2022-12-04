@@ -31,7 +31,7 @@ func NewSRProducer(kafkaURL, srURL string) (*srProducer, error) {
 	}
 	s, err := protobuf.NewSerializer(c, serde.ValueSerde, protobuf.NewSerializerConfig())
 	if err != nil {
-		return nil, fmt.Errorf("error with creating ProducerClient serializer: %w", err)
+		return nil, fmt.Errorf("error with creating serializer: %w", err)
 	}
 	return &srProducer{
 		producer:   p,
