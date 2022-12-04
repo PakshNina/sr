@@ -19,7 +19,8 @@ type srProducer struct {
 	serializer serde.Serializer
 }
 
-func NewProducerClient(kafkaURL, srURL string) (*srProducer, error) {
+// NewSRProducer returns kafka producer with schema registry
+func NewSRProducer(kafkaURL, srURL string) (*srProducer, error) {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": kafkaURL})
 	if err != nil {
 		return nil, fmt.Errorf("error with creating ProducerClient: %w", err)
@@ -38,7 +39,7 @@ func NewProducerClient(kafkaURL, srURL string) (*srProducer, error) {
 	}, nil
 }
 
-// ProduceMessage sends serialized message to kafka
+// ProduceMessage sends serialized message to kafka using schema registry
 func (p *srProducer) ProduceMessage(msg proto.Message, topic string) (int64, error) {
 	kafkaChan := make(chan kafka.Event)
 	defer close(kafkaChan)
@@ -63,7 +64,7 @@ func (p *srProducer) ProduceMessage(msg proto.Message, topic string) (int64, err
 	return nullOffset, nil
 }
 
-// Close SR and Kafka
+// Close schema registry and Kafka
 func (p *srProducer) Close() {
 	p.serializer.Close()
 	p.producer.Close()

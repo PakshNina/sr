@@ -15,7 +15,7 @@ const (
 
 func main() {
 	cfg := config.NewConfig()
-	producer, err := queue.NewProducerClient(cfg.KafkaURL, cfg.SchemaRegistryURL)
+	producer, err := queue.NewSRProducer(cfg.KafkaURL, cfg.SchemaRegistryURL)
 	if err != nil {
 		log.Fatalf("error with producer: %v", err)
 	}
