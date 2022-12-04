@@ -16,6 +16,8 @@ const (
 func main() {
 	cfg := config.NewConfig()
 	producer, err := queue.NewProducer(cfg.KafkaURL, cfg.SchemaRegistryURL)
+	defer producer.Close()
+
 	if err != nil {
 		log.Fatalf("error with producer: %v", err)
 	}
@@ -25,5 +27,4 @@ func main() {
 		log.Fatalf("error with produce message: %v", err)
 	}
 	fmt.Println(offset)
-	producer.Close()
 }
