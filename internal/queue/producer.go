@@ -19,8 +19,8 @@ type srProducer struct {
 	serializer serde.Serializer
 }
 
-// NewSRProducer returns kafka producer with schema registry
-func NewSRProducer(kafkaURL, srURL string) (*srProducer, error) {
+// NewProducer returns kafka producer with schema registry
+func NewProducer(kafkaURL, srURL string) (*srProducer, error) {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": kafkaURL})
 	if err != nil {
 		return nil, fmt.Errorf("error with creating producer: %w", err)
