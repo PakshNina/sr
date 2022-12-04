@@ -50,7 +50,6 @@ func (p *srProducer) ProduceMessage(msg proto.Message, topic string) (int64, err
 	if err = p.producer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic},
 		Value:          payload,
-		Headers:        []kafka.Header{},
 	}, kafkaChan); err != nil {
 		return nullOffset, fmt.Errorf("error with producing message: %w", err)
 	}
