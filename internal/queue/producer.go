@@ -52,7 +52,7 @@ func (p *srProducer) ProduceMessage(msg proto.Message, topic string) (int64, err
 		Value:          payload,
 		Headers:        []kafka.Header{},
 	}, kafkaChan); err != nil {
-		return nullOffset, fmt.Errorf("error with produsing message: %w", err)
+		return nullOffset, fmt.Errorf("error with producing message: %w", err)
 	}
 	e := <-kafkaChan
 	switch ev := e.(type) {
