@@ -4,6 +4,6 @@ option go_package = "./test";
 
 package test;
 
-message Message {
-  string value = 1;
+message TestMessage {
+  int32 Value = 1;
 }

@@ -20,16 +20,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Message struct {
+type TestMessage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+	Value int32 `protobuf:"varint,1,opt,name=Value,proto3" json:"Value,omitempty"`
 }
 
-func (x *Message) Reset() {
-	*x = Message{}
+func (x *TestMessage) Reset() {
+	*x = TestMessage{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_test_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -37,13 +37,13 @@ func (x *Message) Reset() {
 	}
 }
 
-func (x *Message) String() string {
+func (x *TestMessage) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Message) ProtoMessage() {}
+func (*TestMessage) ProtoMessage() {}
 
-func (x *Message) ProtoReflect() protoreflect.Message {
+func (x *TestMessage) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_test_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,26 +55,26 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Message.ProtoReflect.Descriptor instead.
-func (*Message) Descriptor() ([]byte, []int) {
+// Deprecated: Use TestMessage.ProtoReflect.Descriptor instead.
+func (*TestMessage) Descriptor() ([]byte, []int) {
 	return file_proto_test_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Message) GetValue() string {
+func (x *TestMessage) GetValue() int32 {
 	if x != nil {
 		return x.Value
 	}
-	return ""
+	return 0
 }
 
 var File_proto_test_proto protoreflect.FileDescriptor
 
 var file_proto_test_proto_rawDesc = []byte{
 	0x0a, 0x10, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x74, 0x65, 0x73, 0x74, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x12, 0x04, 0x74, 0x65, 0x73, 0x74, 0x22, 0x1f, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x42, 0x08, 0x5a, 0x06, 0x2e, 0x2f, 0x74,
-	0x65, 0x73, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x6f, 0x12, 0x04, 0x74, 0x65, 0x73, 0x74, 0x22, 0x23, 0x0a, 0x0b, 0x54, 0x65, 0x73, 0x74,
+	0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x56, 0x61, 0x6c, 0x75, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x42, 0x08, 0x5a,
+	0x06, 0x2e, 0x2f, 0x74, 0x65, 0x73, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -91,7 +91,7 @@ func file_proto_test_proto_rawDescGZIP() []byte {
 
 var file_proto_test_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_proto_test_proto_goTypes = []interface{}{
-	(*Message)(nil), // 0: test.Message
+	(*TestMessage)(nil), // 0: test.TestMessage
 }
 var file_proto_test_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -108,7 +108,7 @@ func file_proto_test_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_proto_test_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Message); i {
+			switch v := v.(*TestMessage); i {
 			case 0:
 				return &v.state
 			case 1:
