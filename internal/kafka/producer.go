@@ -14,13 +14,18 @@ const (
 	nullOffset = -1
 )
 
+type SRProducer interface {
+	ProduceMessage(msg proto.Message, topic string) (int64, error)
+	Close()
+}
+
 type srProducer struct {
 	producer   *kafka.Producer
 	serializer serde.Serializer
 }
 
 // NewProducer returns kafka producer with schema registry
-func NewProducer(kafkaURL, srURL string) (*srProducer, error) {
+func NewProducer(kafkaURL, srURL string) (SRProducer, error) {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": kafkaURL})
 	if err != nil {
 		return nil, fmt.Errorf("error with creating producer: %w", err)
