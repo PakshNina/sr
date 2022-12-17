@@ -19,12 +19,12 @@ func main() {
 	defer producer.Close()
 
 	if err != nil {
-		log.Fatalf("error with producer: %v", err)
+		log.Fatal(err)
 	}
 	testMSG := test.TestMessage{Value: 42}
 	offset, err := producer.ProduceMessage(&testMSG, topic)
 	if err != nil {
-		log.Fatalf("error with produce message: %v", err)
+		log.Fatal(err)
 	}
 	fmt.Println(offset)
 }
