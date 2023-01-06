@@ -2,7 +2,6 @@ package kafka
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -47,17 +46,17 @@ func NewConsumer(kafkaURL, srURL string) (SRConsumer, error) {
 		"enable.auto.commit": false,
 	})
 	if err != nil {
-		return nil, fmt.Errorf("error with consumer: %w", err)
+		return nil, err
 	}
 
 	sr, err := schemaregistry.NewClient(schemaregistry.NewConfig(srURL))
 	if err != nil {
-		return nil, fmt.Errorf("error with schema registry: %w", err)
+		return nil, err
 	}
 
 	d, err := protobuf.NewDeserializer(sr, serde.ValueSerde, protobuf.NewDeserializerConfig())
 	if err != nil {
-		return nil, fmt.Errorf("error with deserializer: %w", err)
+		return nil, err
 	}
 	return &srConsumer{
 		consumer:     c,
@@ -69,7 +68,7 @@ func NewConsumer(kafkaURL, srURL string) (SRConsumer, error) {
 func (c *srConsumer) AddHandler(handler Handler) error {
 	c.handler = handler
 	if err := c.deserializer.ProtoRegistry.RegisterMessage(handler.MessageType()); err != nil {
-		return fmt.Errorf("error with RegisterMessage: %w", err)
+		return err
 	}
 	return nil
 }
