@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
 	"log"
+
 	"sr/internal/config"
 	"sr/internal/kafka"
 	"sr/pkg/test"
@@ -20,12 +20,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	handler := kafka.NewSimpleHandler(topic, (&test.TestMessage{}).ProtoReflect().Type())
-	if err := consumer.AddHandler(handler); err != nil {
-		log.Fatal(err)
-	}
-	ctx := context.Background()
-	if err := consumer.Run(ctx); err != nil {
+	messageType := (&test.TestMessage{}).ProtoReflect().Type()
+	if err := consumer.Run(messageType, topic); err != nil {
 		log.Fatal(err)
 	}
 }

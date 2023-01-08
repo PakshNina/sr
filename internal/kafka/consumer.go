@@ -1,7 +1,7 @@
 package kafka
 
 import (
-	"context"
+	"fmt"
 	"log"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -19,22 +19,13 @@ const (
 
 // SRConsumer interface
 type SRConsumer interface {
-	AddHandler(handler Handler) error
-	Run(ctx context.Context) error
+	Run(messageType protoreflect.MessageType, topic string) error
 	Close()
 }
 
 type srConsumer struct {
 	consumer     *kafka.Consumer
 	deserializer *protobuf.Deserializer
-	handler      Handler
-}
-
-// Handler interface
-type Handler interface {
-	HandleMessage(ctx context.Context, message interface{}, offset int64) error
-	TopicName() string
-	MessageType() protoreflect.MessageType
 }
 
 // NewConsumer returns new consumer with schema registry
@@ -64,18 +55,17 @@ func NewConsumer(kafkaURL, srURL string) (SRConsumer, error) {
 	}, nil
 }
 
-// AddHandler add simpleHandler and register schema in SR
-func (c *srConsumer) AddHandler(handler Handler) error {
-	c.handler = handler
-	if err := c.deserializer.ProtoRegistry.RegisterMessage(handler.MessageType()); err != nil {
-		return err
-	}
+// RegisterMessage add simpleHandler and register schema in SR
+func (c *srConsumer) RegisterMessage(messageType protoreflect.MessageType) error {
 	return nil
 }
 
 // Run consumer
-func (c *srConsumer) Run(ctx context.Context) error {
-	if err := c.consumer.SubscribeTopics([]string{c.handler.TopicName()}, nil); err != nil {
+func (c *srConsumer) Run(messageType protoreflect.MessageType, topic string) error {
+	if err := c.consumer.SubscribeTopics([]string{topic}, nil); err != nil {
+		return err
+	}
+	if err := c.deserializer.ProtoRegistry.RegisterMessage(messageType); err != nil {
 		return err
 	}
 	for {
@@ -83,14 +73,19 @@ func (c *srConsumer) Run(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		msg, err := c.deserializer.Deserialize(c.handler.TopicName(), kafkaMsg.Value)
-		if err = c.handler.HandleMessage(ctx, msg, int64(kafkaMsg.TopicPartition.Offset)); err != nil {
-			continue
+		msg, err := c.deserializer.Deserialize(topic, kafkaMsg.Value)
+		if err != nil {
+			return err
 		}
+		c.handleMessage(msg, int64(kafkaMsg.TopicPartition.Offset))
 		if _, err = c.consumer.CommitMessage(kafkaMsg); err != nil {
 			return err
 		}
 	}
+}
+
+func (c *srConsumer) handleMessage(message interface{}, offset int64) {
+	fmt.Printf("message %v with offset %d\n", message, offset)
 }
 
 // Close all connections
