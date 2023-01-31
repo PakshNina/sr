@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"sr/internal/kafka"
-	"sr/pkg/test"
+	test "sr/pkg/test.v1"
 )
 
 const (
