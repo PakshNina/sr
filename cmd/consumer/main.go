@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
+	"os"
 
-	"sr/internal/config"
 	"sr/internal/kafka"
 	"sr/pkg/test"
 )
@@ -13,8 +13,9 @@ const (
 )
 
 func main() {
-	cfg := config.NewConfig()
-	consumer, err := kafka.NewConsumer(cfg.KafkaURL, cfg.SchemaRegistryURL)
+	kafkaURL := os.Getenv("KAFKA_URL")
+	schemaRegistryURL := os.Getenv("SCHEMA_REGISTRY_URL")
+	consumer, err := kafka.NewConsumer(kafkaURL, schemaRegistryURL)
 	defer consumer.Close()
 
 	if err != nil {

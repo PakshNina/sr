@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
-	"sr/internal/config"
 	"sr/internal/kafka"
 	"sr/pkg/test"
 )
@@ -14,8 +14,9 @@ const (
 )
 
 func main() {
-	cfg := config.NewConfig()
-	producer, err := kafka.NewProducer(cfg.KafkaURL, cfg.SchemaRegistryURL)
+	kafkaURL := os.Getenv("KAFKA_URL")
+	schemaRegistryURL := os.Getenv("SCHEMA_REGISTRY_URL")
+	producer, err := kafka.NewProducer(kafkaURL, schemaRegistryURL)
 	defer producer.Close()
 
 	if err != nil {
