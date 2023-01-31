@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "./pkg/test.v1";
 
+package test.v1;
 
 message TestMessage {
   int32 Value = 1;
